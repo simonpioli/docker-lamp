@@ -22,13 +22,26 @@ RUN groupmod -g ${BOOT2DOCKER_GID} staff
 
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
-RUN add-apt-repository -y ppa:sergey-dryabzhinsky/php55 && add-apt-repository -y ppa:sergey-dryabzhinsky/php55-modules && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -y install supervisor wget git apache2 php-xdebug libapache2-mod-php55 mysql-server php55 php55-mod-mysql pwgen php55-mod-apc php55-mod-mcrypt php55-mod-gd php55-mod-xml php55-mod-mbstring php55-mod-gettext zip unzip php55-mod-zip && \
+  apt-get -y install supervisor wget git apache2  mysql-server freetds pwgen zip unzip && \
   apt-get -y autoremove && \
   echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Roll our own build of PHP 5.5
+# xdebug
+# libapache2
+# mysql
+# apc
+# mcrypt
+# gd
+# xml
+# mbstring
+# gettext
+# zip
+# curl
+# pdo-dblib -- directory to freetds
 
 # Update CLI PHP to use 5.5
 RUN ln -sfn /usr/bin/php5.5 /etc/alternatives/php
